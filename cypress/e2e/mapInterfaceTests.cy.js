@@ -1,8 +1,8 @@
 const TLVcoordinate = [ 34.7818, 32.0853 ]
 // const rightEdgeCoordinate = [ 52.8242, 33.7851 ]
 // const leftEdgeCoordinate = [ 14.5039, 35.1218 ]
-const rightEdgeCoordinate = [ 30, 33.7851 ]
-const leftEdgeCoordinate = [ 27.5039, 35.1218 ]
+const startCoordinate = [ 30, 33.7851 ]
+const endCoordinate = [ 27.5039, 35.1218 ]
 
 describe(`basic interface tests`, () => {
     beforeEach(`open map`, () => {
@@ -10,36 +10,59 @@ describe(`basic interface tests`, () => {
         cy.wait(4000)
     })
 
-    it(`click on map by coordinate`, () => {
+    it.only(`click on map by coordinate`, () => {
         cy.getMap().should('be.visible')
 
         cy.window().then(window => {
-            const map = window.map
-            const pixel = map.getPixelFromCoordinate(TLVcoordinate)
-            debugger
-            cy.getMap().click(pixel[0], pixel[1]).then(() => {
+            const view = window.map.getView();
+            view.setZoom(10) // zoom in for better presition
 
-                cy.log(`clicked on Tel-Aviv (coordinate ${TLVcoordinate})`)
-    
-                cy.log(window.map.getAllLayers()[2].getSource().getFeatures()[0].getGeometry().flatCoordinates)
-                // map.getAllLayers()[2].getSource().getFeatures()[0].getGeometry().flatCoordinates.should('deep.equal', TLVcoordinate)
+            cy.wait(500).then(() => {
+                const map = window.map
+                const pixel = map.getPixelFromCoordinate(TLVcoordinate)
+
+                cy.getMap().click(pixel[0], pixel[1]).then(() => {
+                    cy.log(`clicked on Tel-Aviv (coordinate ${TLVcoordinate})`)
+
+                    // access the point's propperty in ol:
+                    const newPoint = window.map.getAllLayers()[2].getSource().getFeatures()[0]; 
+                    cy.log(`new point ID is ${newPoint.getId()}`) 
+                    const pointCoordinate = newPoint.getGeometry().flatCoordinates 
+                
+                    cy.shortenCoordinate(pointCoordinate).then((coord) => {
+                        cy.shortenCoordinate(TLVcoordinate).should('deep.equal', coord)
+                    })
+                })
             })
         })
     })
 
     // fix this
-    // it(`drag from coordinate to coordinate`, () => {
-    //     cy.window().then(window => {
-    //         debugger;
-    //         const map = window.map
-    //         const pixel1 = map.getPixelFromCoordinate(rightEdgeCoordinate)
-    //         const pixel2 = map.getPixelFromCoordinate(leftEdgeCoordinate)
-    //     cy.getMap()
-    //         .trigger('pointerdown', { which: 1, pageX: pixel1[0], pageY: pixel1[1] })
-    //         .trigger('pointermove', { which: 1, pageX: pixel2[0], pageY: pixel2[1] })
-    //         .trigger('pointerup')
-    //     })
-    // })
+    it(`drag from coordinate to coordinate`, () => {
+        cy.window().then(window => {
+            debugger;
+            const map = window.map
+            const startPixel = map.getPixelFromCoordinate(startCoordinate)
+            const endPixel = map.getPixelFromCoordinate(endCoordinate)
+            
+        cy.getMap()
+        .trigger('pointerdown', {
+            which: 1,
+            clientX: startPixel[0],
+            clientY: startPixel[1],
+            bubbles: true
+        })
+        .trigger('pointermove', {
+            which: 1,
+            clientX: endPixel[0],
+            clientY: endPixel[1],
+            bubbles: true
+        })
+        .trigger('pointerup', {
+            bubbles: true
+        });
+        })
+    })
 
     it(`zoom in`, () => {
         cy.window().then((window) => {
