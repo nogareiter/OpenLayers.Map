@@ -2,7 +2,8 @@
   "devDependencies": {
     "cypress": "^13.17.0",
     "cypress-image-diff-js": "^2.3.0",
-    "cypress-image-snapshot": "^4.0.1"
+    "pixelmatch": "^6.0.0",
+    "pngjs": "^7.0.0"
   },
   "name": "openlayersautomation",
   "version": "1.0.0",
@@ -70,6 +71,7 @@
     "figures": "^3.2.0",
     "forever-agent": "^0.6.1",
     "form-data": "^4.0.1",
+    "fs": "^0.0.1-security",
     "fs-extra": "^9.1.0",
     "function-bind": "^1.1.2",
     "get-intrinsic": "^1.2.7",
