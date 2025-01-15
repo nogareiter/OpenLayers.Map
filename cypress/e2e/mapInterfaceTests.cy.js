@@ -1,6 +1,4 @@
 const TLVcoordinate = [ 34.7818, 32.0853 ]
-// const rightEdgeCoordinate = [ 52.8242, 33.7851 ]
-// const leftEdgeCoordinate = [ 14.5039, 35.1218 ]
 const startCoordinate = [ 30, 33.7851 ]
 const endCoordinate = [ 27.5039, 35.1218 ]
 
@@ -10,7 +8,7 @@ describe(`basic interface tests`, () => {
         cy.wait(4000)
     })
 
-    it.only(`click on map by coordinate`, () => {
+    it(`click on map by coordinate`, () => {
         cy.getMap().should('be.visible')
 
         cy.window().then(window => {
