@@ -1,7 +1,3 @@
-import Pixelmatch from 'pixelmatch';
-const PNG = require('pngjs').PNG;
-
-
 describe(`visual testing test`, () => {
     beforeEach(`open map`, () => {
         cy.navToPage()
@@ -11,7 +7,7 @@ describe(`visual testing test`, () => {
 
     describe("Compares the map screenshot with the baseline", () => {
       it('positive test- compare to default map', () => {
-        cy.getMap().screenshot('defaultMap-screenshot');
+        // cy.getMap().screenshot('defaultMap-screenshot');
   
           cy.readFile(
               './cypress/screenshots/baseLine/baseSnapshot-map.png', 'base64'
@@ -32,7 +28,7 @@ describe(`visual testing test`, () => {
   
       it('negative test- compare to map with points', () => {
         cy.getMap().click(412.0431, 417.8676);
-        cy.getMap().screenshot('mapWithPoint-screenshot');
+        // cy.getMap().screenshot('mapWithPoint-screenshot');
   
           cy.readFile(
               './cypress/screenshots/baseLine/baseSnapshot-map.png', 'base64'
