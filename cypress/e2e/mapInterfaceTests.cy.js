@@ -10,7 +10,7 @@ describe(`basic interface tests`, () => {
         cy.wait(4000)
     })
 
-    it.only(`click on map by coordinate`, () => {
+    it(`click on map by coordinate`, () => {
         cy.getMap().should('be.visible')
 
         cy.window().then(window => {
